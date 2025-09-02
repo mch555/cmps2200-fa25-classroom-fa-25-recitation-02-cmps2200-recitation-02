@@ -1,0 +1,60 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: test_simple_work
+      id: test_simple_work
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_simple_work
+        setup-command: pip3 install pytest tabulate
+        command: pytest test_main.py::test_simple_work
+        timeout: 10
+        max-score: 1
+    - name: test_work
+      id: test_work
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_work
+        setup-command: pip3 install pytest tabulate
+        command: pytest test_main.py::test_work
+        timeout: 10
+        max-score: 1
+    - name: test_compare_work
+      id: test_compare_work
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_compare_work
+        setup-command: pip3 install pytest tabulate
+        command: pytest test_main.py::test_compare_work
+        timeout: 10
+        max-score: 1
+    - name: test_compare_span
+      id: test_compare_span
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_compare_span
+        setup-command: pip3 install pytest tabulate
+        command: pytest test_main.py::test_compare_span
+        timeout: 10
+        max-score: 1
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST_SIMPLE_WORK_RESULTS: "${{steps.test_simple_work.outputs.result}}"
+        TEST_WORK_RESULTS: "${{steps.test_work.outputs.result}}"
+        TEST_COMPARE_WORK_RESULTS: "${{steps.test_compare_work.outputs.result}}"
+        TEST_COMPARE_SPAN_RESULTS: "${{steps.test_compare_span.outputs.result}}"
+      with:
+        runners: test_simple_work,test_work,test_compare_work,test_compare_span
