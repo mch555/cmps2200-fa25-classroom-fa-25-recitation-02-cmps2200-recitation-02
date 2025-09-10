@@ -52,3 +52,4 @@ def test_compare_span():
 	print("Comparing span functions")
 	print(compare_span(span_fn1, span_fn2, ns))
 	print(compare_span(span_fn2, span_fn3, ns))
+ 
