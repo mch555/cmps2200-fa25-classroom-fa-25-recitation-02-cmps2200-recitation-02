@@ -87,3 +87,4 @@ after implementing span_calc and running test_compare_span the empirical values 
 f(n)=1 span grew logarithmically
 f(n)=logn span grew like (logn)^2
 and f(n)=n span grew linearly in n
+ 
